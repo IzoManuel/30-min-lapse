@@ -23,7 +23,7 @@ def append_todo_block(file_path):
     sprint_datetime = get_sprint_datetime()
     todo_block = f"""
     
-## [ ] FROM {sprint_datetime}
+## [ ] CREATED AT {sprint_datetime}
 ## Task
 ## Evaluation
 ## Grade
