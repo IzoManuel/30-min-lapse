@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
+import os
 import sys
 from datetime import datetime, timedelta
+
 
 def get_sprint_datetime():
     now = datetime.now()
@@ -19,6 +22,7 @@ def get_sprint_datetime():
     formatted_time = sprint_time.strftime("%d %B, %Y %I:%M %p").lstrip("0")
     return formatted_time
 
+
 def append_todo_block(file_path):
     sprint_datetime = get_sprint_datetime()
     todo_block = f"""
@@ -26,19 +30,43 @@ def append_todo_block(file_path):
 ## [ ] CREATED AT {sprint_datetime}
 ## Task
 ## Evaluation
+### Pros
+### Cons
 ## Grade
 ## State
 """
     try:
         with open(file_path, 'a', encoding='utf-8') as f:
             f.write(todo_block)
-        print(f"Successfully appended new sprint starting at {sprint_datetime} to {file_path}")
+        print(
+            f"Successfully appended new sprint starting at {sprint_datetime} to {file_path}")
     except Exception as e:
         print(f"Error appending to {file_path}: {e}")
 
+
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python append_todo.py <path_to_md_file>")
-    else:
-        file_path = sys.argv[1]
-        append_todo_block(file_path)
+    # Get current year and month
+    now = datetime.now()
+    year = now.strftime("%Y")
+    month = now.strftime("%B").lower()
+
+    # Define the base directory
+    base_dir = os.path.expanduser("~/Documents/30-min-lapse")
+
+    # Create the base directory if it doesn't exist
+    if not os.path.exists(base_dir):
+        os.makedirs(base_dir)
+
+    # Create directory for the year if it doesn't exist
+    year_dir = os.path.join(base_dir, year)
+    if not os.path.exists(year_dir):
+        os.makedirs(year_dir)
+
+    # Create file for the month if it doesn't exist
+    file_path = os.path.join(year_dir, f"{month}.md")
+    if not os.path.exists(file_path):
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(f"# {month.capitalize()} {year}\n")
+
+    # Append the todo block
+    append_todo_block(file_path)
