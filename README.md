@@ -14,6 +14,11 @@
 
 ```append_todo```
 
+- Optionally add a topic when running the command
+
+```append_todo "Finish Adding a Button"```
+
+
 # Directory path for created MD files
 - A directory is created on running the command `~/Documents/30-min-lapse`
 - Current year is retrieved and concatenated into the directory `~/Documents/30-min-lapse/2025/`
