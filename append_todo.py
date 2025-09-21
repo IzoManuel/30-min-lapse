@@ -23,11 +23,16 @@ def get_sprint_datetime():
     return formatted_time
 
 
-def append_todo_block(file_path):
+def append_todo_block(file_path, topic=None):
     sprint_datetime = get_sprint_datetime()
+    if topic:
+        header = f"## [ ] CREATED AT {sprint_datetime}, {topic}"
+    else:
+        header = f"## [ ] CREATED AT {sprint_datetime}"
+
     todo_block = f"""
 
-## [ ] CREATED AT {sprint_datetime}
+{header}
 ## Task
 ## Evaluation
 ### Pros
@@ -39,12 +44,18 @@ def append_todo_block(file_path):
         with open(file_path, 'a', encoding='utf-8') as f:
             f.write(todo_block)
         print(
-            f"Successfully appended new sprint starting at {sprint_datetime} to {file_path}")
+            f"Successfully appended new sprint starting at {sprint_datetime}"
+            + (f" with topic '{topic}'" if topic else "")
+            + f" to {file_path}"
+        )
     except Exception as e:
         print(f"Error appending to {file_path}: {e}")
 
 
 if __name__ == "__main__":
+    # Get topic from CLI args (if any)
+    topic = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else None
+
     # Get current year and month
     now = datetime.now()
     year = now.strftime("%Y")
@@ -69,4 +80,4 @@ if __name__ == "__main__":
             f.write(f"# {month.capitalize()} {year}\n")
 
     # Append the todo block
-    append_todo_block(file_path)
+    append_todo_block(file_path, topic)
